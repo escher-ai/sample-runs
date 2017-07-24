@@ -1,6 +1,7 @@
 CURRENT_BRANCH=`git branch | grep \* | cut -d ' ' -f2`
 RUN_BRANCH=escher-run-$${RUN_ID}
-RUN_REPO_URL=https://github.com/escher-ai/sample-runs.git
+#RUN_REPO_URL=https://github.com/escher-ai/sample-runs.git
+RUN_REPO_URL=`git remote $(current_branch) get-url | grep \* | cut -d ' ' -f2`
 
 default:
 #	make clean
@@ -30,4 +31,5 @@ pre-run:
 	git push escher $(RUN_BRANCH) -f && \
 	git co master && \
 	git merge --no-commit --squash ${RUN_BRANCH} && \
-	git reset HEAD # to unstage the changes
+	git reset HEAD # to unstage the changes && \
+	git branch -D $${RUN_BRANCH}
